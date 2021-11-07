@@ -61,18 +61,28 @@ public final class MainMenu {
         do {
           System.out.println("Please Enter CheckIn Date:");
           checkIn = in.nextLine();
+          if (!emailPattern.matcher(checkIn).matches()) {
+            System.out.println("Invalid Date!");
+          }
         } while (!pattern.matcher(checkIn).matches());
         do {
           System.out.println("Please Enter CheckOut Date:");
           checkOut = in.nextLine();
+          if (!emailPattern.matcher(checkOut).matches()) {
+            System.out.println("Invalid Date!");
+          }
         } while (!pattern.matcher(checkOut).matches());
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         Date checkInDate = formatter.parse(checkIn);
         Date checkOutDate = formatter.parse(checkOut);
         while (checkOutDate.before(checkInDate)) {
+          System.out.println("CheckOut Date must be after CheckIn Date!");
           do {
             System.out.println("Please Enter CheckOut Date:");
             checkOut = in.nextLine();
+            if (!emailPattern.matcher(checkOut).matches()) {
+              System.out.println("Invalid Date!");
+            }
           } while (!pattern.matcher(checkOut).matches());
           checkOutDate = formatter.parse(checkOut);
         }
@@ -85,6 +95,9 @@ public final class MainMenu {
         do {
           System.out.println("Please Enter Email:");
           email = in.nextLine();
+          if (!emailPattern.matcher(email).matches()) {
+            System.out.println("Invalid Email!");
+          }
         } while (!emailPattern.matcher(email).matches());
         if (hotelResource.getCustomer(email) == null && adminResource.getCustomer(email) == null) {
           System.out.println("Please create your account first.");
@@ -92,6 +105,9 @@ public final class MainMenu {
           do {
             System.out.println("Please Select Room:");
             room = in.nextLine();
+            if (hotelResource.getRoom(room) == null) {
+              System.out.println("The Room Doesn't exist!");
+            }
           } while (hotelResource.getRoom(room) == null);
           hotelResource.bookARoom(email, hotelResource.getRoom(room), checkInDate, checkOutDate);
         }
@@ -102,6 +118,9 @@ public final class MainMenu {
         do {
           System.out.println("Please Enter Email:");
           email = in.nextLine();
+          if (!emailPattern.matcher(email).matches()) {
+            System.out.println("Invalid Email!");
+          }
         } while (!emailPattern.matcher(email).matches());
         if (hotelResource.getCustomer(email) == null) {
           System.out.println("Please create your account first.");
@@ -118,6 +137,9 @@ public final class MainMenu {
         do {
           System.out.println("Please Enter Email:");
           email = in.nextLine();
+          if (!emailPattern.matcher(email).matches()) {
+            System.out.println("Invalid Email!");
+          }
         } while (!emailPattern.matcher(email).matches());
         System.out.println("Please Enter First Name:");
         String firstName = in.nextLine();
@@ -132,8 +154,8 @@ public final class MainMenu {
       }
 
       if (selection.equals("5")) {
-        flag = 1;
+        System.exit(0);
       }
-    } while (flag == 0);
+    } while (true);
   }
 }

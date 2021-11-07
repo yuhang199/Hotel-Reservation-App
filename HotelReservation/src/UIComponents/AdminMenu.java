@@ -43,6 +43,9 @@ public final class AdminMenu {
         System.out.println("4. Add a Room");
         System.out.println("5. Back to Main Menu");
         selection = in.nextLine();
+        if (!isValidService(selection)) {
+          System.out.println("Invalid selection!");
+        }
       } while (!isValidService(selection));
 
       if (selection.equals("1")) {
@@ -76,8 +79,16 @@ public final class AdminMenu {
           do {
             System.out.println("Enter the Room Type: ");
             type = in.nextLine();
+            if (!type.equalsIgnoreCase("single") && !type.equalsIgnoreCase("double")) {
+              System.out.println("Invalid Room Type!");
+            }
           } while (!type.equalsIgnoreCase("single") && !type.equalsIgnoreCase("double"));
-          RoomType roomType = RoomType.valueOf(type);
+          RoomType roomType;
+          if (type.equalsIgnoreCase("single")) {
+            roomType = RoomType.SINGLE;
+          } else {
+            roomType = RoomType.DOUBLE;
+          }
           toAdd.add(new Room(roomID, price, roomType));
           System.out.println("Finish adding? (yes/no)");
           String decision = in.nextLine();
