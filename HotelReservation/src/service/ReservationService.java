@@ -39,7 +39,9 @@ public final class ReservationService {
   public Reservation reserveARoom(
       Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
     Reservation reserved = new Reservation(customer, room, checkInDate, checkOutDate);
-    reservations.add(reserved);
+    if (reservations.contains(reserved)) {
+      reservations.add(reserved);
+    }
     return reserved;
   }
 
@@ -54,7 +56,7 @@ public final class ReservationService {
     return freeRooms;
   }
 
-  private Set<IRoom> getReservedRooms(Date checkInDate, Date checkOutDate) {
+  Set<IRoom> getReservedRooms(Date checkInDate, Date checkOutDate) {
     Set<IRoom> reservedRooms = new HashSet<>();
     for (Reservation r : reservations) {
       IRoom room = r.getRoom();

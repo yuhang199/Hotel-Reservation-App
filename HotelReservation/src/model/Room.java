@@ -1,9 +1,9 @@
 package model;
 
 public class Room implements IRoom {
-  private String roomNumber;
-  private Double price;
-  private RoomType type;
+  private final String roomNumber;
+  private final Double price;
+  private final RoomType type;
 
   public Room(String roomNumber, Double price, RoomType enumeration) {
     if (roomNumber == null || enumeration == null) {
@@ -43,5 +43,23 @@ public class Room implements IRoom {
         + ", price = "
         + this.getRoomPrice()
         + "]";
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Room)) {
+      return false;
+    }
+    return ((Room) other).getRoomNumber().equals(getRoomNumber())
+        && ((Room) other).getRoomType().equals(getRoomType())
+        && ((Room) other).getRoomPrice().equals(getRoomPrice());
+  }
+
+  @Override
+  public int hashCode() {
+    return (int) (roomNumber.hashCode() * Math.round(price) + 1);
   }
 }

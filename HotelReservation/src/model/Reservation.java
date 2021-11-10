@@ -3,10 +3,10 @@ package model;
 import java.util.Date;
 
 public class Reservation {
-  private Customer customer;
-  private IRoom room;
-  private Date checkInDate;
-  private Date checkOutDate;
+  private final Customer customer;
+  private final IRoom room;
+  private final Date checkInDate;
+  private final Date checkOutDate;
 
   public Reservation(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
     if (customer == null || room == null || checkInDate == null || checkOutDate == null) {
@@ -45,5 +45,24 @@ public class Reservation {
         + ", checkOutDate = "
         + getCheckOutDate()
         + "]";
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Reservation)) {
+      return false;
+    }
+    return ((Reservation) other).getCustomer().equals(getCustomer())
+            && ((Reservation) other).getRoom().equals(getRoom())
+            && ((Reservation) other).getCheckInDate().equals(getCheckInDate())
+            && ((Reservation) other).getCheckOutDate().equals(getCheckOutDate());
+  }
+
+  @Override
+  public int hashCode() {
+    return (int) customer.hashCode() * room.hashCode();
   }
 }

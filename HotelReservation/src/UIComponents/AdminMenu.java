@@ -48,62 +48,71 @@ public final class AdminMenu {
         }
       } while (!isValidService(selection));
 
-      if (selection.equals("1")) {
-        Collection<Customer> customers = adminResource.getAllCustomers();
-        for (Customer customer : customers) {
-          System.out.println(customer);
+      switch (selection) {
+        case "1" -> {
+          Collection<Customer> customers = adminResource.getAllCustomers();
+          for (Customer customer : customers) {
+            System.out.println(customer);
+          }
         }
-      }
-
-      if (selection.equals("2")) {
-        Collection<IRoom> rooms = adminResource.getAllRooms();
-        for (IRoom room : rooms) {
-          System.out.println(room);
+        case "2" -> {
+          Collection<IRoom> rooms = adminResource.getAllRooms();
+          for (IRoom room : rooms) {
+            System.out.println(room);
+          }
         }
-      }
-
-      if (selection.equals("3")) {
-        adminResource.displayAllReservations();
-      }
-
-      if (selection.equals("4")) {
-        Collection<IRoom> toAdd = new HashSet<>();
-        int flag2 = 0;
-        do {
-          System.out.println("Enter a Room to add: ");
-          String roomID = in.nextLine();
-          System.out.println("Enter the Room Price: ");
-          double price = in.nextDouble();
-          in.nextLine();
-          String type;
+        case "3" -> adminResource.displayAllReservations();
+        case "4" -> {
+          Collection<IRoom> toAdd = new HashSet<>();
+          int flag2 = 0;
           do {
-            System.out.println("Enter the Room Type: ");
-            type = in.nextLine();
-            if (!type.equalsIgnoreCase("single") && !type.equalsIgnoreCase("double")) {
-              System.out.println("Invalid Room Type!");
+            System.out.println("Enter a Room to add: ");
+            String roomID = in.nextLine();
+            System.out.println("Enter the Room Price: ");
+            String priceStr;
+            double price = 0;
+            int flag3 = 0;
+            do {
+              try {
+                priceStr = in.nextLine();
+                price = Double.parseDouble(priceStr);
+                flag3 = 0;
+              } catch (NumberFormatException e) {
+                System.out.println("Invalid price! Please enter a number");
+                flag3 = 1;
+              }
+            } while (flag3 != 0);
+            System.out.println(price);
+            String type;
+            do {
+              System.out.println("Enter the Room Type: (single/double)");
+              type = in.nextLine();
+              if (!type.equalsIgnoreCase("single") && !type.equalsIgnoreCase("double")) {
+                System.out.println("Invalid Room Type!");
+              }
+            } while (!type.equalsIgnoreCase("single") && !type.equalsIgnoreCase("double"));
+            RoomType roomType;
+            if (type.equalsIgnoreCase("single")) {
+              roomType = RoomType.SINGLE;
+            } else {
+              roomType = RoomType.DOUBLE;
             }
-          } while (!type.equalsIgnoreCase("single") && !type.equalsIgnoreCase("double"));
-          RoomType roomType;
-          if (type.equalsIgnoreCase("single")) {
-            roomType = RoomType.SINGLE;
-          } else {
-            roomType = RoomType.DOUBLE;
-          }
-          toAdd.add(new Room(roomID, price, roomType));
-          System.out.println("Finish adding? (yes/no)");
-          String decision = in.nextLine();
-          if (decision.equals("yes")) {
-            flag2 = 1;
-          }
-          if (!decision.equals("yes") && !decision.equals("no")) {
-            flag2 = 1;
-            flag = 1;
-          }
-        } while (flag2 == 0);
-        adminResource.addRoom(toAdd);
-      }
-      if (selection.equals("5")) {
-        flag = 1;
+            IRoom newRoom = new Room(roomID, price, roomType);
+            if (!toAdd.contains(newRoom)) {
+              toAdd.add(newRoom);
+            }
+            System.out.println("Finish adding? (yes/no)");
+            String decision = in.nextLine();
+            if (decision.equalsIgnoreCase("yes")) {
+              flag2 = 1;
+            }
+            if (!decision.equalsIgnoreCase("yes") && !decision.equalsIgnoreCase("no")) {
+              flag2 = 1;
+            }
+          } while (flag2 == 0);
+          adminResource.addRoom(toAdd);
+        }
+        case "5" -> flag = 1;
       }
     } while (flag == 0);
 
