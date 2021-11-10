@@ -11,8 +11,8 @@ import java.util.Date;
 
 public final class HotelResource {
   private static HotelResource hotelResource;
-  private ReservationService reservationService;
-  private CustomerService customerService;
+  private final ReservationService reservationService;
+  private final CustomerService customerService;
 
   private HotelResource() {
     reservationService = ReservationService.create();

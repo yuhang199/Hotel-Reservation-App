@@ -9,6 +9,7 @@ import model.Reservation;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Scanner;
@@ -88,6 +89,28 @@ public final class MainMenu {
           Collection<IRoom> freeRooms = hotelResource.findARoom(checkInDate, checkOutDate);
           for (IRoom room : freeRooms) {
             System.out.println(room);
+          }
+          if (freeRooms.size() == 0){
+          while (freeRooms.size() == 0) {
+            System.out.println("There is currently no available room for your date range. Here are the free rooms a week after your selected dates: ");
+            Calendar c1 = Calendar.getInstance();
+            Calendar c2 = Calendar.getInstance();
+            c1.setTime(checkInDate);
+            c1.add(Calendar.DAY_OF_MONTH, 7);
+            c2.setTime(checkOutDate);
+            c2.add(Calendar.DAY_OF_MONTH, 7);
+            checkInDate = formatter.parse(formatter.format(c1.getTime()));
+            checkOutDate = formatter.parse(formatter.format(c2.getTime()));
+            freeRooms = hotelResource.findARoom(checkInDate, checkOutDate);
+            for (IRoom room : freeRooms) {
+              System.out.println(room);
+            }
+          }
+          System.out.println("Still want to book the room? (yes?)");
+          String decision = in.nextLine();
+          if (!decision.equalsIgnoreCase("yes")){
+            break;
+          }
           }
           String email;
           String room;

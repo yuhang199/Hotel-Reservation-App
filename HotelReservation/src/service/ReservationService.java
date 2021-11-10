@@ -39,7 +39,7 @@ public final class ReservationService {
   public Reservation reserveARoom(
       Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
     Reservation reserved = new Reservation(customer, room, checkInDate, checkOutDate);
-    if (reservations.contains(reserved)) {
+    if (!reservations.contains(reserved)) {
       reservations.add(reserved);
     }
     return reserved;
